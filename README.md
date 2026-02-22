@@ -1,5 +1,7 @@
 # Tulis Izin Digital 🖋️
 
+![Netlify Status](https://api.netlify.com/api/v1/badges/e0b70671-ab03-4706-9663-ab50c44ec357/deploy-status)
+
 A premium, web-based digital letter application designed for creating permission letters (Surat Izin) quickly and elegantly. Features a modern dashboard, real-time paper preview, and various customization options.
 
 ## Features ✨
