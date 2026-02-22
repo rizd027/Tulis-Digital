@@ -10,6 +10,9 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "Tulis Izin Digital - Presisi Gambar Asli",
   description: "Buat surat izin digital dengan tulisan tangan asli yang rapi dan cepat.",
+  icons: {
+    icon: "/favicon.svg",
+  },
 };
 
 export default function RootLayout({
