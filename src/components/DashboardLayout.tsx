@@ -85,35 +85,46 @@ export default function DashboardLayout() {
                 state.isInteracting && "translate-y-32 opacity-0 pointer-events-none md:translate-y-0 md:opacity-100 md:pointer-events-auto",
                 isExporting && "pointer-events-none opacity-50"
             )}>
-                <div className="flex md:flex-col flex-row gap-1 md:gap-4 w-full md:w-auto justify-around md:justify-start relative">
+                <div className="flex md:flex-col flex-row gap-0 md:gap-4 w-full md:w-auto justify-center md:justify-start relative">
                     {tabs.map((tab) => (
-                        <button
+                        <motion.button
                             key={tab.id}
                             onClick={() => handleTabClick(tab.id as Tab)}
+                            whileTap={{ scale: 0.92 }}
                             className={cn(
-                                "flex-1 md:flex-none p-2 md:p-3 rounded-xl transition-all duration-300 relative group flex flex-col items-center gap-1 z-10",
+                                "flex-1 md:flex-none p-2 md:p-3 rounded-xl transition-all duration-300 relative group flex flex-col items-center gap-0.5 md:gap-1 z-10",
                                 activeTab === tab.id
                                     ? "text-white"
                                     : "text-slate-400 hover:text-white"
                             )}
                             title={tab.title}
                         >
+                            {/* Mobile Active Indicator Pill */}
+                            {activeTab === tab.id && (
+                                <motion.div
+                                    layoutId="activeTabIndicatorMobile"
+                                    className="absolute inset-x-1 inset-y-1.5 bg-[#0ea5e9]/10 rounded-xl md:hidden"
+                                    initial={false}
+                                    transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                                />
+                            )}
+
                             <div className={cn(
-                                "p-1.5 rounded-lg transition-all duration-300",
-                                activeTab === tab.id && "bg-[#0ea5e9]/20"
+                                "p-1 md:p-1.5 rounded-lg transition-all duration-300",
+                                activeTab === tab.id && "bg-[#0ea5e9]/15 md:bg-[#0ea5e9]/20"
                             )}>
                                 <tab.icon
-                                    size={20}
+                                    size={18}
                                     strokeWidth={activeTab === tab.id ? 2.5 : 2}
                                     className={cn(
                                         "transition-transform duration-300",
-                                        activeTab === tab.id ? "scale-110 text-[#0ea5e9]" : "group-hover:scale-110 shadow-[0_0_15px_rgba(14,165,233,0.2)]"
+                                        activeTab === tab.id ? "text-[#0ea5e9] scale-110" : "group-hover:text-white"
                                     )}
                                 />
                             </div>
                             {/* Mobile Label */}
                             <span className={cn(
-                                "text-[8px] font-bold md:hidden uppercase tracking-tighter transition-colors duration-300",
+                                "text-[9px] font-black md:hidden tracking-tighter transition-colors duration-300",
                                 activeTab === tab.id ? "text-[#0ea5e9]" : "text-slate-500"
                             )}>
                                 {tab.id === "editor" ? "SURAT" :
@@ -129,7 +140,7 @@ export default function DashboardLayout() {
                                     className="absolute -left-1.5 top-1/2 -translate-y-1/2 w-1 h-5 rounded-r-full bg-[#0ea5e9] shadow-[0_0_10px_rgba(14,165,233,0.5)] hidden md:block"
                                 />
                             )}
-                        </button>
+                        </motion.button>
                     ))}
                 </div>
 
@@ -210,10 +221,10 @@ export default function DashboardLayout() {
                     <motion.div
                         key="mobile-panel"
                         className={cn(
-                            "md:hidden fixed left-4 right-4 z-40 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden flex flex-col shadow-2xl transition-all duration-300",
+                            "md:hidden fixed left-4 right-4 z-40 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden flex flex-col shadow-2xl transition-all duration-300 pb-safe",
                             state.isInteracting
                                 ? "bg-transparent border-transparent shadow-none max-h-[15vh] bottom-40"
-                                : "bg-[#1e293b]/95 max-h-[55vh] bottom-[110px]"
+                                : "bg-[#1e293b]/95 max-h-[55vh] bottom-24 shadow-[0_20px_60px_-15px_rgba(0,0,0,1)]"
                         )}
                         initial={{ y: "100%", opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
@@ -266,8 +277,8 @@ export default function DashboardLayout() {
             </main>
 
             {/* Premium Zoom Control */}
-            <div className="fixed bottom-24 md:bottom-8 left-1/2 -translate-x-1/2 md:left-auto md:right-8 md:translate-x-0 z-[60] flex flex-col items-center md:items-end gap-3 pointer-events-none w-full max-w-[90vw] md:w-auto">
-                <AnimatePresence>
+            <div className="fixed bottom-[94px] md:bottom-8 left-1/2 -translate-x-1/2 md:left-auto md:right-8 md:translate-x-0 z-[49] flex flex-col items-center md:items-end gap-3 pointer-events-none w-full max-w-[90vw] md:w-auto">
+                <AnimatePresence mode="wait">
                     {!state.isInteracting && (
                         <motion.div
                             initial={{ opacity: 0, scale: 0.9, y: 20 }}
