@@ -110,7 +110,8 @@ onMounted(() => {
     }
 
     const hasSeenHint = localStorage.getItem("keyboard-hints-seen");
-    if (!hasSeenHint) {
+    const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+    if (!hasSeenHint && !isMobile) {
         setTimeout(() => {
             toast.info("💡 Tip: Gunakan Ctrl+S untuk menyimpan, Ctrl+B untuk bold!", { duration: 5000 });
             localStorage.setItem("keyboard-hints-seen", "true");

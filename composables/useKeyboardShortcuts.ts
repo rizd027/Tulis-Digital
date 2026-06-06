@@ -18,6 +18,7 @@ export function useKeyboardShortcuts({
     onUnderline
 }: UseKeyboardShortcutsProps) {
     const handleKeyDown = (e: KeyboardEvent) => {
+        if (typeof window !== "undefined" && window.innerWidth < 768) return;
         const isCtrlOrCmd = e.ctrlKey || e.metaKey;
         if (!isCtrlOrCmd) return;
 

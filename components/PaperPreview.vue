@@ -1,9 +1,61 @@
 <script setup lang="ts">
-const { state } = useEditorState();
+import { ref, onMounted, onUnmounted } from "vue";
+
+const { state, updateState, updateInteraction } = useEditorState();
+
+const containerRef = ref<HTMLDivElement | null>(null);
+const initialDistance = ref(0);
+const initialZoom = ref(0.7);
+
+const handleTouchStart = (e: TouchEvent) => {
+    if (e.touches.length === 2) {
+        e.preventDefault();
+        const touch1 = e.touches[0];
+        const touch2 = e.touches[1];
+        initialDistance.value = Math.hypot(touch2.clientX - touch1.clientX, touch2.clientY - touch1.clientY);
+        initialZoom.value = state.value.zoom;
+        updateInteraction(true);
+    }
+};
+
+const handleTouchMove = (e: TouchEvent) => {
+    if (e.touches.length === 2 && initialDistance.value > 0) {
+        e.preventDefault();
+        const touch1 = e.touches[0];
+        const touch2 = e.touches[1];
+        const currentDistance = Math.hypot(touch2.clientX - touch1.clientX, touch2.clientY - touch1.clientY);
+        const factor = currentDistance / initialDistance.value;
+        const newZoom = Math.max(0.3, Math.min(1.5, initialZoom.value * factor));
+        updateState({ zoom: newZoom });
+    }
+};
+
+const handleTouchEnd = () => {
+    initialDistance.value = 0;
+    updateInteraction(false);
+};
+
+onMounted(() => {
+    if (containerRef.value) {
+        containerRef.value.addEventListener("touchstart", handleTouchStart, { passive: false });
+        containerRef.value.addEventListener("touchmove", handleTouchMove, { passive: false });
+        containerRef.value.addEventListener("touchend", handleTouchEnd);
+        containerRef.value.addEventListener("touchcancel", handleTouchEnd);
+    }
+});
+
+onUnmounted(() => {
+    if (containerRef.value) {
+        containerRef.value.removeEventListener("touchstart", handleTouchStart);
+        containerRef.value.removeEventListener("touchmove", handleTouchMove);
+        containerRef.value.removeEventListener("touchend", handleTouchEnd);
+        containerRef.value.removeEventListener("touchcancel", handleTouchEnd);
+    }
+});
 </script>
 
 <template>
-    <div class="w-full min-h-full flex items-center justify-center p-4 md:p-8">
+    <div ref="containerRef" class="w-full min-h-full flex items-center justify-center p-4 md:p-8">
         <div
             id="paper-to-export"
             class="relative bg-white shadow-[0_40px_100px_rgba(0,0,0,0.6)] w-[794px] h-[1123px] flex-shrink-0 transition-all origin-top overflow-hidden"

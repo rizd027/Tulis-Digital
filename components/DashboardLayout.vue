@@ -246,7 +246,7 @@ const handleTabClick = (id: Tab) => {
         </main>
 
         <!-- Premium Zoom Control -->
-        <div class="fixed bottom-[94px] md:bottom-8 left-1/2 -translate-x-1/2 md:left-auto md:right-8 md:translate-x-0 z-[49] flex flex-col items-center md:items-end gap-3 pointer-events-none w-full max-w-[90vw] md:w-auto">
+        <div class="hidden md:flex fixed bottom-[94px] md:bottom-8 left-1/2 -translate-x-1/2 md:left-auto md:right-8 md:translate-x-0 z-[49] flex-col items-center md:items-end gap-3 pointer-events-none w-full max-w-[90vw] md:w-auto">
             <Transition
                 enter-active-class="transition duration-300 ease-out"
                 enter-from-class="transform translate-y-4 opacity-0 scale-95"
