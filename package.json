@@ -2,36 +2,26 @@
   "name": "tulis-izin-digital",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
   },
   "dependencies": {
-    "@radix-ui/react-tooltip": "^1.2.8",
     "clsx": "^2.1.1",
-    "framer-motion": "^12.0.0",
     "html-to-image": "^1.11.13",
     "jspdf": "^4.1.0",
-    "lucide-react": "^0.475.0",
-    "next": "15.5.7",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "react-hot-toast": "^2.6.0",
-    "react-signature-canvas": "^1.1.0-alpha.2",
-    "tailwind-merge": "^3.0.1"
+    "lucide-vue-next": "^0.475.0",
+    "tailwind-merge": "^3.0.1",
+    "vue": "^3.4.0",
+    "vue-router": "^4.3.0"
   },
   "devDependencies": {
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "@types/react-signature-canvas": "^1.0.7",
-    "autoprefixer": "^10.4.17",
-    "eslint": "^9",
-    "eslint-config-next": "15.5.7",
-    "postcss": "^8",
-    "tailwindcss": "^3.4.1",
-    "typescript": "^5"
+    "@nuxtjs/tailwindcss": "^6.12.0",
+    "nuxt": "^3.11.2",
+    "typescript": "^5.4.0"
   }
 }

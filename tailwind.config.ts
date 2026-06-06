@@ -1,10 +1,14 @@
 import type { Config } from "tailwindcss";
 
-const config: Config = {
+export default <Partial<Config>>{
     content: [
-        "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
-        "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
-        "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+        "./components/**/*.{vue,js,ts}",
+        "./layouts/**/*.vue",
+        "./pages/**/*.vue",
+        "./composables/**/*.{js,ts}",
+        "./plugins/**/*.{js,ts}",
+        "./app.vue",
+        "./error.vue"
     ],
     theme: {
         extend: {
@@ -17,4 +21,3 @@ const config: Config = {
     },
     plugins: [],
 };
-export default config;

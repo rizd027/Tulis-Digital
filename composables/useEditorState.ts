@@ -1,6 +1,4 @@
-"use client";
-
-import { useState, useEffect } from "react";
+import { ref, watch, onMounted } from "vue";
 
 export type EditorState = {
     content: string;
@@ -66,49 +64,50 @@ const DEFAULT_STATE: EditorState = {
     isInteracting: false,
 };
 
+// Global state singleton for Vue reactivity sharing
+const state = ref<EditorState>({ ...DEFAULT_STATE });
+const isInitialized = ref(false);
+
 export function useEditorState() {
-    const [state, setState] = useState<EditorState>(DEFAULT_STATE);
-
-    // Initial load from localStorage after mount to avoid hydration mismatch
-    useEffect(() => {
-        const saved = localStorage.getItem("tulis-izin-state");
-        if (saved) {
-            try {
-                const parsed = JSON.parse(saved);
-                setState(parsed);
-            } catch (e) {
-                console.error("Failed to parse saved state", e);
+    onMounted(() => {
+        if (!isInitialized.value) {
+            const saved = localStorage.getItem("tulis-izin-state");
+            if (saved) {
+                try {
+                    const parsed = JSON.parse(saved);
+                    state.value = { ...DEFAULT_STATE, ...parsed };
+                } catch (e) {
+                    console.error("Failed to parse saved state", e);
+                }
             }
+            isInitialized.value = true;
         }
-    }, []);
+    });
 
-    // Save to localStorage whenever state changes
-    useEffect(() => {
-        if (typeof window !== "undefined") {
-            localStorage.setItem("tulis-izin-state", JSON.stringify(state));
-        }
-    }, [state]);
+    watch(
+        state,
+        (newState) => {
+            if (typeof window !== "undefined" && isInitialized.value) {
+                localStorage.setItem("tulis-izin-state", JSON.stringify(newState));
+            }
+        },
+        { deep: true }
+    );
 
     const updateState = (updates: Partial<EditorState>) => {
-        setState((prev) => ({ ...prev, ...updates }));
+        state.value = { ...state.value, ...updates };
     };
 
     const updatePaperMargin = (updates: Partial<EditorState["paperMargin"]>) => {
-        setState((prev) => ({
-            ...prev,
-            paperMargin: { ...prev.paperMargin, ...updates },
-        }));
+        state.value.paperMargin = { ...state.value.paperMargin, ...updates };
     };
 
     const updateSignature = (updates: Partial<EditorState["signature"]>) => {
-        setState((prev) => ({
-            ...prev,
-            signature: { ...prev.signature, ...updates },
-        }));
+        state.value.signature = { ...state.value.signature, ...updates };
     };
 
     const updateInteraction = (isInteracting: boolean) => {
-        setState((prev) => ({ ...prev, isInteracting }));
+        state.value.isInteracting = isInteracting;
     };
 
     return {
